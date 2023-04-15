@@ -1,5 +1,15 @@
-import React from "react";
+import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
+import Login from "../Login";
+import PubSub from "pubsub-js";
 export default function LargeHeader() {
+  const [isOn, setIsOn] = useState(true);
+  useEffect(() => {
+    PubSub.subscribe("imgshow", (_, data) => {
+      setIsOn(data);
+    });
+  }, []);
   return (
     <div>
       <div
@@ -10,12 +20,36 @@ export default function LargeHeader() {
           height: "600px",
         }}
       >
-        <img
-          src={"/Crowdfunding.webp"}
-          style={{ float: "right", paddingRight: "15px", borderRadius: "15px" }}
-        ></img>
+        <SwitchTransition mode="out-in">
+          <CSSTransition
+            key={isOn}
+            classNames={"image"}
+            timeout={1000}
+            unmountOnExit={true}
+            appear
+          >
+            {isOn ? (
+              <img
+                src={"/Crowdfunding.webp"}
+                style={{
+                  float: "right",
+                  paddingRight: "15px",
+                  borderRadius: "15px",
+                }}
+              ></img>
+            ) : (
+              <Login />
+            )}
+          </CSSTransition>
+        </SwitchTransition>
+
         <div
-          style={{ width: "850px", paddingRight: "20px", paddingTop: "50px" }}
+          style={{
+            width: "900px",
+            paddingRight: "20px",
+            paddingTop: "50px",
+            paddingLeft: "50px",
+          }}
         >
           <h1
             style={{
@@ -35,18 +69,18 @@ export default function LargeHeader() {
             please click the following button
           </p>
           <p style={{ paddingTop: "10px" }}>
-            <a
+            <Link
               className="btn btn-primary btn-lg"
               style={{
                 backgroundColor: "rgba(255, 196, 0, 0.966)",
                 color: "black",
                 borderRadius: "10px",
               }}
-              href="#"
+              href="/fund"
               role="button"
             >
               <strong>发起众筹</strong>
-            </a>
+            </Link>
           </p>
         </div>
       </div>

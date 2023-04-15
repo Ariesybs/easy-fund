@@ -1,4 +1,9 @@
 import Head from "next/head";
+import { createContext, useEffect, useState } from "react";
+import "../styles/test.css";
+import crowdfunding from "../../build/contracts/crowdfunding.json";
+import { ethers } from "ethers";
+import Base from "\u0016\u0016@component/components/Base";
 export default function App({ Component, pageProps }) {
   return (
     <>
@@ -23,7 +28,9 @@ export default function App({ Component, pageProps }) {
           crossorigin="anonymous"
         ></link>
       </Head>
-      <Component {...pageProps} />
+      <Base>
+        <Component {...pageProps} />
+      </Base>
     </>
   );
 }
